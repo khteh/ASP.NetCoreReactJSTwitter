@@ -13,4 +13,9 @@ namespace ASP.NetCoreReactJSTwitter
         public string ScreenName { get; set; }
         public List<string> Friends { get; set; }
     }
+    public class Tweet
+    {
+        public string TweetString { get; set; }
+        public byte[] File { get; set; }
+    }
 }
