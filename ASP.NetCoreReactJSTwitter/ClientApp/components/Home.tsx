@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import TwitterLogin from 'react-twitter-auth';
 import * as Models from '../Models';
 import axios from 'axios';
+import { Timeline } from 'react-twitter-widgets';
 interface UserState {
     loading: boolean,
     user: Models.User,
@@ -56,6 +57,19 @@ export class Home extends React.Component<RouteComponentProps<{}>, UserState> {
     public render() {
         if (!this.state.loading) {
             const user = this.state.user;
+            const screenName = !!user && !!user.isAuthenticated ? user.screenName : "";
+            let datasource = {};
+            let options = {};
+            if (!!user && !!user.isAuthenticated) {
+                datasource = {
+                    sourceType: 'profile',
+                    screenName: user.screenName
+                };
+                options = {
+                    username: user.screenName,
+                    height: '400'
+                };
+            }
             let url = !!user && !!user.isAuthenticated ? "https://twitter.com/" + user.screenName + "?ref_src=twsrc%5Etfw" : "";
             let content = !!user && !!user.isAuthenticated ? (
                 <div >
@@ -80,8 +94,19 @@ export class Home extends React.Component<RouteComponentProps<{}>, UserState> {
                             <button onClick={this.logout.bind(this)} className="button">Log out</button>
                         </div>
                         <div className="row">
-                            <a className="twitter-timeline" href={url}>Tweets by {user.screenName}</a>
-                            {user.friends.map(friend => <a className="twitter-timeline" href={"https://twitter.com/" + friend + "?ref_src=twsrc%5Etfw"}>Tweets followed by {user.screenName}</a>)}
+                            <Timeline dataSource={datasource} options={options} onLoad={() => console.log('Timeline is loaded!')} />
+                            {user.friends.map(friend => {
+                                let datasource = {
+                                    sourceType: 'profile',
+                                    screenName: friend
+                                };
+                                let options = {
+                                    username: friend,
+                                    height: '400'
+                                };
+                                <Timeline dataSource={datasource} options={options} onLoad={() => console.log('Timeline is loaded!')} />
+                                })
+                            }
                         </div>
                     </div>
                 </div>
