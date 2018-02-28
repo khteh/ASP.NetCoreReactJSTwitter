@@ -47,10 +47,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, UserState> {
         data.append("File", file);
         axios.post('/home/post', data)
             .then(result => {
-                let message = "Success!"
-                if (!result.data.success)
-                    message = result.data.message;
-                console.log("Post result: " + message);
+                if (result.status === 200)
+                    this.forceUpdate();
+                console.log("Post result: " + result.statusText);
             })
             .catch(ex => console.error(ex));
     }

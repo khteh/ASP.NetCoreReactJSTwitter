@@ -71,6 +71,7 @@ namespace ASP.NetCoreReactJSTwitter.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            if (Auth.Credentials != null && Tweetinvi.User.GetAuthenticatedUser(Auth.Credentials) != null)
             try
             {
                 string strTweet = string.Empty;
