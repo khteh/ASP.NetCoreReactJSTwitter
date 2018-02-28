@@ -1,18 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Tweetinvi;
 using Tweetinvi.Models;
+using Tweetinvi.Parameters;
+
 namespace ASP.NetCoreReactJSTwitter.Controllers
 {
     [Produces("application/json")]
+//    [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly string _key, _secret;
@@ -36,7 +38,6 @@ namespace ASP.NetCoreReactJSTwitter.Controllers
                 return View(user);
             }
             return View();
-            //return View(!string.IsNullOrEmpty(user) ? JsonConvert.DeserializeObject<User>(user) : null);
         }
         [HttpGet]
         public IActionResult CurrentUser()
@@ -66,33 +67,41 @@ namespace ASP.NetCoreReactJSTwitter.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Tweet tweet)
+        public async Task<IActionResult> Post(IFormCollection form)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             try
             {
-                ITweet publishedTweet = Auth.ExecuteOperationWithCredentials(Auth.Credentials, PublishTweet);
-                bool success = publishedTweet != null;
-                var routeValueParameters = new Dictionary<string, object>();
-                routeValueParameters.Add("id", publishedTweet == null ? (Nullable<long>)null : publishedTweet.Id);
-                routeValueParameters.Add("actionPerformed", "Publish");
-                routeValueParameters.Add("success", success);
-                return Ok();
+                string strTweet = string.Empty;
+                if (form.Any() && form.Keys.Contains("TweetString"))
+                    strTweet = form["TweetString"];
+                IFormFile file = form.Files.FirstOrDefault();
+                if (!string.IsNullOrEmpty(strTweet))
+                {
+                    ITweet publishedTweet = Auth.ExecuteOperationWithCredentials(Auth.Credentials, () =>
+                    {
+                        var publishOptions = new PublishTweetOptionalParameters();
+                        if (file != null)
+                        {
+                            var fileBytes = GetByteArrayFromFile(file);
+                            publishOptions.MediaBinaries.Add(fileBytes);
+                        }
+                        return Tweetinvi.Tweet.PublishTweet(strTweet, publishOptions);
+                    });
+                    bool success = publishedTweet != null;
+                    var routeValueParameters = new Dictionary<string, object>();
+                    routeValueParameters.Add("id", publishedTweet == null ? (Nullable<long>)null : publishedTweet.Id);
+                    routeValueParameters.Add("actionPerformed", "Publish");
+                    routeValueParameters.Add("success", success);
+                    return Ok();
+                }
             }
             catch (Exception e)
             {
                 throw;
             }
-            //return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-        private ITweet PublishTweet()
-        {
-            var fileBytes = GetByteArrayFromFile(Image);
-            var publishOptions = new PublishTweetOptionalParameters();
-            if (fileBytes != null)
-                publishOptions.MediaBinaries.Add(fileBytes);
-            return Tweetinvi.Tweet.PublishTweet(TweetString, publishOptions);
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
         private byte[] GetByteArrayFromFile(IFormFile file)
         {

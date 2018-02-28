@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@types/react-twitter-auth": "0.0.0",
+    "axios": "^0.18.0",
     "react-twitter-auth": "0.0.11"
   }
 }
