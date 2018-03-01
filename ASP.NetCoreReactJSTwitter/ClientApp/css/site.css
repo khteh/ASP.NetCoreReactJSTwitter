@@ -64,3 +64,9 @@
         text-overflow: ellipsis;
     }
 }
+.header-top-margin {
+    margin-top: 20px;
+}
+.body-top-margin {
+    margin-top: 10px;
+}

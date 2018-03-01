@@ -59,23 +59,28 @@ export class Home extends React.Component<RouteComponentProps<{}>, UserState> {
             const user = this.state.user;
             const screenName = !!user && !!user.isAuthenticated ? user.screenName : "";
             let datasource = {};
-            let options = {};
+            let datasources = [];
             if (!!user && !!user.isAuthenticated) {
                 datasource = {
                     sourceType: 'profile',
                     screenName: user.screenName
                 };
-                options = {
-                    username: user.screenName,
-                    height: '400'
-                };
+                if (user.friends.length > 0)
+                    user.friends.map((friend) => datasources.push({sourceType: 'profile', screenName: friend}));
             }
             let url = !!user && !!user.isAuthenticated ? "https://twitter.com/" + user.screenName + "?ref_src=twsrc%5Etfw" : "";
             let content = !!user && !!user.isAuthenticated ? (
-                <div >
-                    <header className="App-header">
-                        <h1 className="App-title">Welcome {user.screenName}</h1>
-                    </header>
+                <div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <header className="App-header">
+                                <h1 className="App-title">Welcome {user.screenName}!</h1>
+                            </header>
+                        </div>
+                        <div className="col-md-2 header-top-margin">
+                            <button className="btn btn-primary" onClick={this.logout.bind(this)}>Log out</button>
+                        </div>
+                    </div>
                     <form id="frmTweet">
                         <div className="row">
                             <div className="col-md-6">
@@ -85,28 +90,17 @@ export class Home extends React.Component<RouteComponentProps<{}>, UserState> {
                                 <input type="file" className="form-control" id="TweetFile" placeholder="Select file to upload..."></input>
                             </div>
                         </div>
-                        <div className="row">
-                            <button type="submit" className="btn btn-success" onClick={this.submit.bind(this)}>Post</button>
+                        <div className="row body-top-margin">
+                            <div className="col-md-2">
+                                <button type="submit" className="btn btn-success" onClick={this.submit.bind(this)}>Post</button>
+                            </div>
                         </div>
                     </form>
                     <div>
-                        <div>
-                            <button onClick={this.logout.bind(this)} className="button">Log out</button>
-                        </div>
                         <div className="row">
-                            <Timeline dataSource={datasource} options={options} onLoad={() => console.log('Timeline is loaded!')} />
-                            {user.friends.map(friend => {
-                                let datasource = {
-                                    sourceType: 'profile',
-                                    screenName: friend
-                                };
-                                let options = {
-                                    username: friend,
-                                    height: '400'
-                                };
-                                <Timeline dataSource={datasource} options={options} onLoad={() => console.log('Timeline is loaded!')} />
-                                })
-                            }
+                            <Timeline dataSource={datasource} onLoad={() => console.log('Timeline is loaded!')} />
+                            {user.friends.length <= 0 ? <p>{user.screenName} does not follow any tweet!</p> : ''}
+                            {datasources.map(source => <Timeline dataSource={source} onLoad={() => console.log('friend Timeline is loaded!')} />)}
                         </div>
                     </div>
                 </div>
