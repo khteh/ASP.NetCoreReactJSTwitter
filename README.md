@@ -12,7 +12,7 @@ This application is using Twitter embedded timeline widget. It implements the fo
 * Post tweets
 
 Build Steps:
-
+* cd ASP.NetCoreReactJSTwitter; npm install;
 * Open the solution file in Visual Studio
 * Right click the project and choose "Manage User Secrets"
 * Enter the following values into the secret file:
