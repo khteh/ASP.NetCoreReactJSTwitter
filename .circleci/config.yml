@@ -10,7 +10,7 @@ jobs:
       - run: 
           name: Install Python exiftool
           command: |
-            apt -y update && apt -y upgrade && apt install -y libimage-exiftool-perl curl
+            apt -y update && apt -y upgrade && apt install -y libimage-exiftool-perl curl sudo
             curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
             apt -y install npm
       - run: dotnet restore --runtime ubuntu.18.10-x64
