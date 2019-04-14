@@ -28,6 +28,9 @@ Build Steps:
 * Save the file
 * Build and run the solution. This can usually be achieved by hitting "F5" key.
 
+Continuous Integration:
+* Integrated with CircleCI
+
 Known Issues:
 
 * Posting tweet with large image will fail: https://github.com/linvi/tweetinvi/issues/648
