@@ -11,7 +11,7 @@ This application is using Twitter embedded timeline widget. It implements the fo
 * Show tweets followed by authenticated user
 * Post tweets
 
-# Build Steps:
+## Build Steps:
 * cd ASP.NetCoreReactJSTwitter; npm install;
 * Open the solution file in Visual Studio
 * Right click the project and choose "Manage User Secrets"
@@ -28,10 +28,10 @@ This application is using Twitter embedded timeline widget. It implements the fo
 * Save the file
 * Build and run the solution. This can usually be achieved by hitting "F5" key.
 
-# Continuous Integration:
+## Continuous Integration:
 * Integrated with CircleCI
 
-# Known Issues:
+## Known Issues:
 
 * Posting tweet with large image will fail: https://github.com/linvi/tweetinvi/issues/648
 * Tweet "like" status is not updated in timeline widget: https://twittercommunity.com/t/profile-timeline-widget-does-not-show-the-like-status/101334
