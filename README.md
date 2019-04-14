@@ -2,7 +2,7 @@
 ASP.NetCoreReactJSTwitter
 ASP.Net Core 2.0 ReactJS with Twitter OAuth Authentication
 
-# Description:
+## Description:
 
 This application is using Twitter embedded timeline widget. It implements the following features:
 
