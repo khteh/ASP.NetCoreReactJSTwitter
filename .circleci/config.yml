@@ -49,4 +49,5 @@ jobs:
             MAJOR=$(cat version.txt | awk -F"." '{ print $1 }')
             MINOR=$(cat version.txt | awk -F"." '{ print $2 }')
             VERSION=$MAJOR.$MINOR.$CIRCLE_BUILD_NUM
-            docker push khteh/twitterreactjsoauth.asp.netcore:latest khteh/twitterreactjsoauth.asp.netcore:$VERSION
+            docker push khteh/twitterreactjsoauth.asp.netcore:latest
+            docker push khteh/twitterreactjsoauth.asp.netcore:$VERSION
