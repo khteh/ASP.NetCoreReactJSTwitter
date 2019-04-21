@@ -1,5 +1,5 @@
 # ASP.NetCoreTwitterOAuth
-ASP.Net Core 2.0 ReactJS with Twitter OAuth Authentication
+ASP.Net Core 2.2 ReactJS with Twitter OAuth Authentication
 
 ## Description:
 
