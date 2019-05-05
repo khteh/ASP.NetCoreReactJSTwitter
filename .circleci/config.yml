@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/workspace
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:latest
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2-bionic
     steps:
       - checkout
       - run: 
